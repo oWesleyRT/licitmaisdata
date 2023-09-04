@@ -2,9 +2,11 @@ package br.com.codewr.lmdados.controller;
 
 import br.com.codewr.lmdados.service.LicitmaisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/lmdados")
@@ -15,7 +17,12 @@ public class LicitmaisController {
 
     @GetMapping
     public String csvData(){
-        return licitmaisService.csvData();
+        return licitmaisService.getAllCompanies();
+    }
+
+    @PostMapping
+    public String login() {
+        return licitmaisService.login();
     }
 
 }
