@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name="licitmaisClient", url = "https://www.sislicbr.licitmais.com.br/modulos/util/anam/dados.php")
+@FeignClient(name="licitmaisClient", url = "${url.generalData}")
 public interface LicitMaisGetAllCompaniesClient {
 
     @GetMapping

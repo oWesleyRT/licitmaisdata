@@ -1,25 +1,8 @@
 package br.com.codewr.lmdados.service;
 
 import br.com.codewr.lmdados.client.LicitMaisGetAllCompaniesClient;
-import br.com.codewr.lmdados.client.LicitMaisLoginClient;
-import br.com.codewr.lmdados.entity.UserData;
-import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.io.IOException;
-import java.net.*;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class LicitmaisService {
@@ -27,60 +10,8 @@ public class LicitmaisService {
     @Autowired
     private LicitMaisGetAllCompaniesClient licitMaisGetAllCompaniesClient;
 
-    @Autowired
-    private LicitMaisLoginClient licitMaisLoginClient;
-
     public String login(){
-//        String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
-//        MultiValueMap<String, String> object2 = new LinkedMultiValueMap<>();
-//        object2.add("data[login]", "47271761000141");
-//        object2.add("data[senha]", "Ecustomize3003");
-//        ResponseEntity<String> retorno = licitMaisLoginClient.login(userAgent, object2);
-//        List<String> cookie = retorno.getHeaders().get("Cookie");
-//        System.out.println(cookie);
-
-        try {
-            CookieManager cookieManager = new CookieManager();
-            CookieHandler.setDefault(cookieManager);
-
-            String baseUrl = "https://www.sislicbr.licitmais.com.br/logar.php";
-            String login = "47271761000141";
-            String senha = "Ecustomize3003";
-            String formData = "data[login]=" + login + "&data[senha]=" + senha;
-            System.out.println(formData);
-            URI uri = URI.create(UriComponentsBuilder.fromUriString(baseUrl)
-                    .toUriString());
-
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(uri)
-                    .POST(HttpRequest.BodyPublishers.ofString(formData))
-                    .header(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36")
-                    .header("Content-Type","application/x-www-form-urlencoded")
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            CookieStore cookieStore = cookieManager.getCookieStore();
-            List<HttpCookie> cookies = cookieStore.getCookies();
-            StringBuilder cookieString = new StringBuilder();
-            for(HttpCookie cookie : cookies){
-                System.out.println(cookie);
-                System.out.println(cookie.getName());
-                System.out.println(cookie.getValue());
-                cookieString.append(cookie.getName())
-                        .append("=")
-                        .append(cookie.getValue())
-                        .append("; ");
-            }
-
-            System.out.println(cookieString.toString());
-
-            String json = response.body();
-            return cookieString.toString();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Requisition failed: " + e.getMessage());
-        }
+        return "Aopa mundo!";
     }
 
     public String getAllCompanies(){
