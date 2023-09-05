@@ -22,7 +22,8 @@ public class LicitmaisController {
 
     @GetMapping("/login")
     public String login() {
-        return licitmaisService.login();
+        licitmaisService.login();
+        return "ok";
     }
 
 }

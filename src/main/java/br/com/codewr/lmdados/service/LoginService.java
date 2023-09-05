@@ -1,12 +1,20 @@
 package br.com.codewr.lmdados.service;
 
+import br.com.codewr.lmdados.entity.CookieData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
@@ -15,9 +23,11 @@ public class LoginService {
     @Value("${url.login}")
     private String url;
 
-    public String login() {
+    public void login() {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-        WebDriver browser = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        WebDriver browser = new ChromeDriver(options);
         browser.manage().window().maximize();
 
         try {
@@ -26,26 +36,23 @@ public class LoginService {
             clickEnter(browser);
             String allCookies = getAllCookies(browser);
             browser.quit();
-            return allCookies;
+            saveCookie(allCookies);
         } catch (Exception e) {
-            throw new RuntimeException("Fail to obtain the cookie");
+            throw new RuntimeException("Fail to obtain the cookie: " + e.getMessage());
         }
     }
 
     private void navigateLoginPage(WebDriver browser) {
         browser.navigate().to(url);
-        threadSleep();
     }
 
     private void fillForm(WebDriver browser) {
-        browser.findElement(By.name("data[login]")).sendKeys("47271761000141");
-        browser.findElement(By.name("data[senha]")).sendKeys("Ecustomize3003");
-        threadSleep();
+        browser.findElement(By.name("data[login]")).sendKeys("06411729000137");
+        browser.findElement(By.name("data[senha]")).sendKeys("senha123");
     }
 
     private void clickEnter(WebDriver browser) {
         browser.findElement(By.xpath("/html/body/div[2]/div/div[2]/fieldset/form/div[3]/div[1]/button")).click();
-        threadSleep();
     }
 
     private String getAllCookies(WebDriver browser){
@@ -60,11 +67,18 @@ public class LoginService {
         return allCookies.toString();
     }
 
-    private void threadSleep() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Thread sleep failed");
+    private void saveCookie(String cookie) {
+        CookieData cookieData = new CookieData(cookie);
+
+        String path = "src/main/resources/cookie.json";
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonString = gson.toJson(cookieData);
+
+        try (FileWriter fileWriter = new FileWriter(path)) {
+            fileWriter.write(jsonString);
+        } catch (IOException e) {
+            throw new RuntimeException("Fail to create cookie archive");
         }
     }
 
