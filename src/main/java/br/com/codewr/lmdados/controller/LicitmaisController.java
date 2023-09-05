@@ -20,7 +20,7 @@ public class LicitmaisController {
         return licitmaisService.getAllCompanies();
     }
 
-    @PostMapping
+    @GetMapping("/login")
     public String login() {
         return licitmaisService.login();
     }
