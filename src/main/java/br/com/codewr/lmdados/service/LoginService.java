@@ -23,6 +23,12 @@ public class LoginService {
     @Value("${url.login}")
     private String url;
 
+    @Value("${user.login}")
+    private String userLogin;
+
+    @Value("${user.password}")
+    private String userPassword;
+
     public void login() {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
@@ -47,8 +53,8 @@ public class LoginService {
     }
 
     private void fillForm(WebDriver browser) {
-        browser.findElement(By.name("data[login]")).sendKeys("06411729000137");
-        browser.findElement(By.name("data[senha]")).sendKeys("senha123");
+        browser.findElement(By.name("data[login]")).sendKeys(userLogin);
+        browser.findElement(By.name("data[senha]")).sendKeys(userPassword);
     }
 
     private void clickEnter(WebDriver browser) {
