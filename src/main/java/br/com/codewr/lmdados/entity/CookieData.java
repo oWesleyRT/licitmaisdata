@@ -16,7 +16,7 @@ public class CookieData {
         LocalDateTime localDateTime = LocalDateTime.now();
         this.cookie = cookie;
         this.dateCreate = localDateTime.toString();
-        this.dateExpire = localDateTime.plusHours(12).toString();
+        this.dateExpire = localDateTime.plusHours(3).toString();
     }
 
     public static Boolean cookieIsValid(CookieData cookie){

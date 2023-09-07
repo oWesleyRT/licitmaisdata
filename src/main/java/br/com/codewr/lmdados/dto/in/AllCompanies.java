@@ -1,4 +1,4 @@
-package br.com.codewr.lmdados.dto;
+package br.com.codewr.lmdados.dto.in;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Test {
+public class AllCompanies {
 
     @JsonProperty("itens")
-    private List<Itens> itens;
+    private List<AllCompaniesItensDTO> itens;
 
 }
