@@ -12,6 +12,7 @@ public interface LicitMaisGetAllCompaniesClient {
     String getAllCompanies(
             @RequestParam String descricao,
             @RequestParam Integer periodo,
+            @RequestParam String estado,
             @RequestHeader(name = "Cookie") String cookie,
             @RequestHeader(name = "User-Agent") String userAgent
             );

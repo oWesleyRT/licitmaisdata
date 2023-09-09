@@ -59,9 +59,9 @@ public class LicitmaisService {
         }
     }
 
-    private List<ItenDTOOut> generateItens(String description, Integer period){
+    private List<ItenDTOOut> generateItens(String description, String uf, Integer period){
         String cookieContent = generateCookie().getCookie();
-        String responseString = licitMaisGetAllCompaniesClient.getAllCompanies(description, period, cookieContent, userAgent);
+        String responseString = licitMaisGetAllCompaniesClient.getAllCompanies(description, period, uf, cookieContent, userAgent);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             AllCompanies response = objectMapper.readValue(responseString, AllCompanies.class);
@@ -104,13 +104,13 @@ public class LicitmaisService {
         return companyDtoOutList;
     }
 
-    public List<ItenDTOOut> generateItensList(String description, Integer period) {
-        List<ItenDTOOut> itenDTOOutList = generateItens(description, period);
+    public List<ItenDTOOut> generateItensList(String description, String uf, Integer period) {
+        List<ItenDTOOut> itenDTOOutList = generateItens(description, uf, period);
         return itenDTOOutList;
     }
 
-    public List<CompanyDtoOut> generateCompaniesList(String description, Integer period) {
-        List<ItenDTOOut> itenDTOOutList = generateItens(description, period);
+    public List<CompanyDtoOut> generateCompaniesList(String description, String uf, Integer period) {
+        List<ItenDTOOut> itenDTOOutList = generateItens(description, uf, period);
         List<CompanyDtoOut> companyDtoOutList = generateCompanies(itenDTOOutList);
         return companyDtoOutList;
     }

@@ -18,17 +18,19 @@ public class LicitmaisController {
     @GetMapping("/itens")
     public List<ItenDTOOut> itensCsvData(
             @RequestParam("description") String description,
+            @RequestParam("uf") String uf,
             @RequestParam("period") Integer period
     ){
-        return licitmaisService.generateItensList(description, period);
+        return licitmaisService.generateItensList(description, uf, period);
     }
 
     @GetMapping("/companies")
     public List<CompanyDtoOut> companiesCsvData(
             @RequestParam("description") String description,
+            @RequestParam("uf") String uf,
             @RequestParam("period") Integer period
     ){
-        return licitmaisService.generateCompaniesList(description, period);
+        return licitmaisService.generateCompaniesList(description, uf, period);
     }
 
 }
