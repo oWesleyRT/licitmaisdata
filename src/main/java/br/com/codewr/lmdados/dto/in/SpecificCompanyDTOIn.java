@@ -20,5 +20,39 @@ public class SpecificCompanyDTOIn {
     private String phoneAlt;
     @JsonProperty("address")
     private AddressSpecificCompany address;
+    @JsonProperty("size")
+    private String size;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhoneAlt() {
+        return phoneAlt;
+    }
+
+    public void setPhoneAlt(String phoneAlt) {
+        this.phoneAlt = phoneAlt;
+    }
+
+    public AddressSpecificCompany getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressSpecificCompany address) {
+        this.address = address;
+    }
 
 }

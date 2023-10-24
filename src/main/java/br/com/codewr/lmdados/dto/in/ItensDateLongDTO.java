@@ -13,4 +13,11 @@ public class ItensDateLongDTO {
     @JsonProperty("$numberLong")
     private Long dateNumber;
 
+    public Long getDateNumber() {
+        return dateNumber;
+    }
+
+    public void setDateNumber(Long dateNumber) {
+        this.dateNumber = dateNumber;
+    }
 }

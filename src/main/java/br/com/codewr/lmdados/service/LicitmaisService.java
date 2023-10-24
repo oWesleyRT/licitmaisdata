@@ -20,6 +20,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -64,6 +67,11 @@ public class LicitmaisService {
         String responseString = licitMaisGetAllCompaniesClient.getAllCompanies(description, period, uf, cookieContent, userAgent);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            if(responseString.contains("<title>.:: Licitmais | Banco de dados de Licitações ::.</title>")) {
+                loginService.login();
+                cookieContent = generateCookie().getCookie();
+                responseString = licitMaisGetAllCompaniesClient.getAllCompanies(description, period, uf, cookieContent, userAgent);
+            }
             AllCompanies response = objectMapper.readValue(responseString, AllCompanies.class);
             List<AllCompaniesItensDTO> allCompaniesItensDTOList = response.getItens();
             List<ItenDTOOut> itenDTOOutList = allCompaniesItensDTOList
@@ -78,29 +86,68 @@ public class LicitmaisService {
         }
     }
 
-    private List<CompanyDtoOut> generateCompanies(List<ItenDTOOut> itenDTOOutList) {
-        List<ItenDTOOut> itenList = itenDTOOutList.stream()
+//    private List<CompanyDtoOut> generateCompanies(List<ItenDTOOut> itenDTOOutList) {
+//        List<ItenDTOOut> itenList = itenDTOOutList.stream()
+//                .distinct()
+//                .collect(Collectors.toList());
+//        List<CompanyDtoOut> companyDtoOutList = new ArrayList<>();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        AtomicReference<Integer> i = new AtomicReference<>(0);
+//        itenList.forEach(
+//                item -> {
+//                    i.set(i.get() + 1);
+//                    System.out.println("Fazendo requisição: " + i);
+//                    String responseString = licitMaisSpecificCompanyInfosClient.getSpecificCompany(
+//                            item.getCnpjVencedor(),
+//                            2,
+//                            userAgent);
+//                    try {
+//                        SpecificCompanyDTOIn specificCompanyDTOIn = objectMapper.readValue(responseString, SpecificCompanyDTOIn.class);
+//                        companyDtoOutList.add(CompanyDtoOut.convertToDtoOut(item, specificCompanyDTOIn));
+//                    } catch (JsonProcessingException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//        );
+//        return companyDtoOutList;
+//    }
+
+    public List<CompanyDtoOut> generateCompanies(List<ItenDTOOut> itenDTOOutList) {
+        List<ItenDTOOut> distinctItenList = itenDTOOutList.stream()
                 .distinct()
-                .collect(Collectors.toList());
-        List<CompanyDtoOut> companyDtoOutList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        AtomicReference<Integer> i = new AtomicReference<>(0);
-        itenList.forEach(
-                item -> {
-                i.set(i.get() + 1);
-                System.out.println("Fazendo requisição: " + i);
+                .toList();
+        List<CompletableFuture<CompanyDtoOut>> futures = new ArrayList<>();
+        AtomicInteger i = new AtomicInteger(0);
+        for (ItenDTOOut item : distinctItenList) {
+            i.incrementAndGet();
+            System.out.println("Fazendo requisição: " + i);
+            ObjectMapper objectMapper = new ObjectMapper();
+            CompletableFuture<CompanyDtoOut> future = CompletableFuture.supplyAsync(() -> {
                 String responseString = licitMaisSpecificCompanyInfosClient.getSpecificCompany(
                         item.getCnpjVencedor(),
                         2,
                         userAgent);
                 try {
                     SpecificCompanyDTOIn specificCompanyDTOIn = objectMapper.readValue(responseString, SpecificCompanyDTOIn.class);
-                    companyDtoOutList.add(CompanyDtoOut.convertToDtoOut(item, specificCompanyDTOIn));
+                    return CompanyDtoOut.convertToDtoOut(item, specificCompanyDTOIn);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }
+            });
+            futures.add(future);
+        }
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        List<CompanyDtoOut> companyDtoOutList = new ArrayList<>();
+        allOf.thenRun(() -> {
+            for (CompletableFuture<CompanyDtoOut> future : futures) {
+                try {
+                    companyDtoOutList.add(future.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
             }
-        );
+        }).join();
+
         return companyDtoOutList;
     }
 

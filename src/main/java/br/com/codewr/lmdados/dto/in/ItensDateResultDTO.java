@@ -14,4 +14,11 @@ public class ItensDateResultDTO {
     @JsonProperty("$date")
     private ItensDateLongDTO dateLong;
 
+    public ItensDateLongDTO getDateLong() {
+        return dateLong;
+    }
+
+    public void setDateLong(ItensDateLongDTO dateLong) {
+        this.dateLong = dateLong;
+    }
 }

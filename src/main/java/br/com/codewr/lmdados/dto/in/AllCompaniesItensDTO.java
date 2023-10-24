@@ -43,4 +43,123 @@ public class AllCompaniesItensDTO {
     @JsonProperty("MODELO")
     private String modelo;
 
+    public String getCnpjVencedor() {
+        return cnpjVencedor;
+    }
+
+    public void setCnpjVencedor(String cnpjVencedor) {
+        this.cnpjVencedor = cnpjVencedor;
+    }
+
+    public String getNomeVencedor() {
+        return nomeVencedor;
+    }
+
+    public void setNomeVencedor(String nomeVencedor) {
+        this.nomeVencedor = nomeVencedor;
+    }
+
+    public String getOrgaoLicitante() {
+        return orgaoLicitante;
+    }
+
+    public void setOrgaoLicitante(String orgaoLicitante) {
+        this.orgaoLicitante = orgaoLicitante;
+    }
+
+    public String getNomeUg() {
+        return nomeUg;
+    }
+
+    public void setNomeUg(String nomeUg) {
+        this.nomeUg = nomeUg;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
+    }
+
+    public String getModalidadeCompra() {
+        return modalidadeCompra;
+    }
+
+    public void setModalidadeCompra(String modalidadeCompra) {
+        this.modalidadeCompra = modalidadeCompra;
+    }
+
+    public String getObjeto() {
+        return objeto;
+    }
+
+    public void setObjeto(String objeto) {
+        this.objeto = objeto;
+    }
+
+    public ItensDateResultDTO getDataResultadoCompra() {
+        return dataResultadoCompra;
+    }
+
+    public void setDataResultadoCompra(ItensDateResultDTO dataResultadoCompra) {
+        this.dataResultadoCompra = dataResultadoCompra;
+    }
+
+    public Double getValorLicitacao() {
+        return valorLicitacao;
+    }
+
+    public void setValorLicitacao(Double valorLicitacao) {
+        this.valorLicitacao = valorLicitacao;
+    }
+
+    public String getPortal() {
+        return portal;
+    }
+
+    public void setPortal(String portal) {
+        this.portal = portal;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getFabricante() {
+        return fabricante;
+    }
+
+    public void setFabricante(String fabricante) {
+        this.fabricante = fabricante;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
 }

@@ -17,4 +17,11 @@ public class AllCompanies {
     @JsonProperty("itens")
     private List<AllCompaniesItensDTO> itens;
 
+    public List<AllCompaniesItensDTO> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<AllCompaniesItensDTO> itens) {
+        this.itens = itens;
+    }
 }
